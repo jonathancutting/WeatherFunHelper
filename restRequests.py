@@ -14,14 +14,19 @@ def sendGetRequest(url:str, params:dict, s:requests.Session) -> requests.Respons
         s (requests.Session, optional): Session object to manage headers
 
     Returns:
-        requests.response: HTML response object
+        requests.response: response object
     '''
     if not url: raise ValueError("URL cannot be empty.")
     try:
         if not s:
-            r = requests.get(url, params=params)
+            r = requests.get(url, headers=params)
         else:
-            r = s.get(url, params=params)
+            r = s.get(url, headers=params)
+
+        # REMOVE ME
+        if r.status_code == 400:
+            print(r.text)
+
         r.raise_for_status() # Raise exception for 4xx and 5xx status codes.
         return r
     except:
