@@ -1,0 +1,7 @@
+{
+    "plogger": {
+        "output": "file",
+        "filePath": "wf_helper.log",
+        "level": "DEBUG"
+    }
+}
