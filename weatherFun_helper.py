@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import utility  # for general utility functions and classes
-from restRequests import sendRequest    # for sending REST requests
+from utility import sendRequest    # for sending REST requests
 import requests # to establish an HTTP session for requests
 import logging  # standard Python logging module
 import plogger  # for enhanced logging
@@ -26,8 +26,19 @@ def main():
 
     # Get observation data.
     resp = getData(sesh)
+    data = json.loads(resp.text)["properties"]
+    metar = data["rawMessage"]
+    
+    temp = data["temperature"]["value"]
+    if (temp is None):
+        temp = metar.split(" ")[6].split("/")[0]
 
-    print(resp.text)
+    dewp = data["dewpoint"]["value"]
+    if (dewp is None):
+        dewp = metar.split(" ")[6].split("/")[1]
+
+    print(f"Temperature: {temp}°C")
+    print(f"   Dewpoint: {dewp}°C")
 
     logger.info("Exiting application.")
 
